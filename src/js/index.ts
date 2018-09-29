@@ -44,6 +44,7 @@ function generateAndShowLongHtmlString(response: AxiosResponse<IComment[]>): voi
 }
 
 let detailContent: HTMLDivElement = <HTMLDivElement>document.getElementById("detailcontent");
+let deleteButton: HTMLButtonElement = <HTMLButtonElement>document.getElementById("deletebutton");
 
 // add to the DOM dynamically, incl event handler
 function addToDOM(response: AxiosResponse<IComment[]>): void {
@@ -61,6 +62,21 @@ function addToDOM(response: AxiosResponse<IComment[]>): void {
             // text string!
             detailContent.innerHTML = comment.email + "<br /> " + comment.body;
             liElement.style.backgroundColor = "red"; // how to unset color?
+            deleteButton.style.display = "block";
+            deleteButton.addEventListener("click", () => {
+                deleteComment(comment.id);
+            });
         });
     });
+}
+
+function deleteComment(id: number): void {
+    let deleteUri: string = "http://jsonplaceholder.typicode.com/comments/" + id;
+    axios.delete(deleteUri).
+        then(function (response: AxiosResponse<IComment[]>): void {
+            console.log(JSON.stringify(response));
+        })
+        .catch(function (error: AxiosError): void {
+            console.log(JSON.stringify(error));
+        });
 }
