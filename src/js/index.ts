@@ -1,13 +1,6 @@
 import axios, {
-    AxiosRequestConfig,
     AxiosResponse,
-    AxiosError,
-    AxiosInstance,
-    AxiosAdapter,
-    Cancel,
-    CancelToken,
-    CancelTokenSource,
-    Canceler
+    AxiosError
 } from "../../node_modules/axios";
 
 // https://github.com/axios/axios/blob/master/test/typescript/axios.ts
@@ -33,15 +26,6 @@ axios.get<IComment>("http://jsonplaceholder.typicode.com/comments").
         console.log(JSON.stringify(error));
     });
 
-function generateAndShowLongHtmlString(response: AxiosResponse<IComment[]>): void {
-    let result: string = "<ol>";
-    response.data.forEach((comment: IComment) => {
-        console.log(comment.email);
-        result += "<li>" + comment.name + "</li>";
-    });
-    result += "</ol>";
-    listContent.innerHTML = result;
-}
 
 let detailContent: HTMLDivElement = <HTMLDivElement>document.getElementById("detailcontent");
 let deleteButton: HTMLButtonElement = <HTMLButtonElement>document.getElementById("deletebutton");
@@ -72,6 +56,7 @@ function addToDOM(response: AxiosResponse<IComment[]>): void {
 
 function deleteComment(id: number): void {
     let deleteUri: string = "http://jsonplaceholder.typicode.com/comments/" + id;
+    console.log("DELETE " +deleteUri);
     axios.delete(deleteUri).
         then(function (response: AxiosResponse<IComment[]>): void {
             console.log(JSON.stringify(response));
