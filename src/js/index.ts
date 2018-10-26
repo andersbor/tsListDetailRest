@@ -1,7 +1,7 @@
 import axios, {
     AxiosResponse,
     AxiosError
-} from "../../node_modules/axios";
+} from "../../node_modules/axios/index";
 
 // https://github.com/axios/axios/blob/master/test/typescript/axios.ts
 // attributes from REST service http://jsonplaceholder.typicode.com/comments
@@ -16,7 +16,7 @@ interface IComment {
 
 let listContent: HTMLDivElement = <HTMLDivElement>document.getElementById("listcontent");
 
-axios.get<IComment>("http://jsonplaceholder.typicode.com/comments").
+axios.get<IComment[]>("http://jsonplaceholder.typicode.com/comments").
     then(function (response: AxiosResponse<IComment[]>): void {
         // outputElement.innerHTML = JSON.stringify(response.data);
         // generateAndShowLongHtmlString(response);
@@ -56,7 +56,7 @@ function addToDOM(response: AxiosResponse<IComment[]>): void {
 
 function deleteComment(id: number): void {
     let deleteUri: string = "http://jsonplaceholder.typicode.com/comments/" + id;
-    console.log("DELETE " +deleteUri);
+    console.log("DELETE " + deleteUri);
     axios.delete(deleteUri).
         then(function (response: AxiosResponse<IComment[]>): void {
             console.log(JSON.stringify(response));
