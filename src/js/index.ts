@@ -15,6 +15,7 @@ interface IComment {
 }
 
 let listContent: HTMLDivElement = <HTMLDivElement>document.getElementById("listcontent");
+let deleteMessage: HTMLDivElement = <HTMLDivElement>document.getElementById("deleteMessage");
 
 axios.get<IComment[]>("http://jsonplaceholder.typicode.com/comments").
     then(function (response: AxiosResponse<IComment[]>): void {
@@ -43,9 +44,10 @@ function addToDOM(response: AxiosResponse<IComment[]>): void {
         // https://www.w3schools.com/css/tryit.asp?filename=trycss_tooltip
         liElement.addEventListener("click", () => {
             console.log(comment.email);
+            deleteMessage.innerHTML = "";
             // text string!
             detailContent.innerHTML = comment.email + "<br /> " + comment.body;
-            liElement.style.backgroundColor = "red"; // how to unset color?
+            //liElement.style.backgroundColor = "red"; // how to unset color?
             deleteButton.style.display = "block";
             deleteButton.addEventListener("click", () => {
                 deleteComment(comment.id);
@@ -56,12 +58,14 @@ function addToDOM(response: AxiosResponse<IComment[]>): void {
 
 function deleteComment(id: number): void {
     let deleteUri: string = "http://jsonplaceholder.typicode.com/comments/" + id;
-    console.log("DELETE " + deleteUri);
+    // console.log("DELETE " + deleteUri);
     axios.delete(deleteUri).
         then(function (response: AxiosResponse<IComment[]>): void {
-            console.log(JSON.stringify(response));
+            //console.log(JSON.stringify(response));
+            deleteMessage.innerHTML = response.status + " " + response.statusText;
+
         })
         .catch(function (error: AxiosError): void {
-            console.log(JSON.stringify(error));
+            deleteMessage.innerHTML = JSON.stringify(error);
         });
 }
